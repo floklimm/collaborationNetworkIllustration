@@ -33,15 +33,15 @@ div.tooltip {
 
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
-    height = +svg.attr("height");
+    height = +svg.attr("height"),
+    radius = 30;
 
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id; }))
-    .force("charge", d3.forceManyBody().distanceMin(20).distanceMax(100).strength(-60))
+    .force("charge", d3.forceManyBody().distanceMin(20).distanceMax(400).strength(-25))
     .force("center", d3.forceCenter(width / 2, height / 2));
-
 
 // Define the div for the tooltip
     var div = d3.select("body").append("div")
@@ -94,6 +94,8 @@ d3.json("fklimm.json", function(error, graph) {
       .links(graph.links);
 
   function ticked() {
+
+
     link
         .attr("x1", function(d) { return d.source.x; })
         .attr("y1", function(d) { return d.source.y; })
@@ -103,6 +105,10 @@ d3.json("fklimm.json", function(error, graph) {
     node
         .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
+
+    node.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
+        .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
+
   }
 });
 
