@@ -12,7 +12,7 @@
 		<script type="text/javascript">
 
 			//Width and height
-			var w = 500;
+			var w = 1000;
 			var h = 300;
 
 			//Original data
@@ -28,12 +28,6 @@
 					{ name: "Hannah" },
 					{ name: "Iris" },
 					{ name: "Jerry" }
-				],
-				nodesExtra: [
-					{ name: "Adam2" },
-					{ name: "Bob2" },
-					{ name: "Carrie2" },
-					{ name: "Donovan2" },
 				],
 				edges: [
 					{ source: 0, target: 1 },
@@ -52,9 +46,14 @@
 				]
 			};
 
+			var dataset2 = d3.json("graph.json", function(data) {
+    	console.log(data);
+			return data
+});
+
 			//Initialize a simple force layout, using the nodes and edges in dataset
 			var force = d3.forceSimulation(dataset.nodes)
-						  .force("charge", d3.forceManyBody())
+						  .force("charge", d3.forceManyBody().strength(-400).distanceMin(15).distanceMax(80))
 						  .force("link", d3.forceLink(dataset.edges))
 						  .force("center", d3.forceCenter().x(w/2).y(h/2));
 
@@ -89,11 +88,13 @@
 					.on("end", dragEnded));
 
 
-			//Add a simple tooltip
-			nodes.append("title")
-				 .text(function(d) {
-					return d.name;
-				 });
+
+
+			// //Add a simple tooltip
+			// nodes.append("title")
+			// 	 .text(function(d) {
+			// 		return d.name;
+			// 	 });
 
 			//Every time the simulation "ticks", this will be called
 			force.on("tick", function() {
