@@ -10,8 +10,8 @@ By Florian Klimm, March 2018
 
 # some options
 deleteEgoNode = True
-inputBibFileName = 'PaulErdos.bib'
-outputJSONFileName = 'PaulErdos.json'
+inputBibFileName = 'einstein.bib'
+outputJSONFileName = 'einstein.json'
 
 # import necessary libraries
 from pybtex.database.input import bibtex # for reading the bib files
@@ -52,21 +52,32 @@ node_list = []
 for i in range(nAuthors):
     node_dict = {} # create an empty dictionary for this node
     node_dict["id"] = "A" + str(i)
-    node_dict["group"] = 1
+    node_dict["group"] = 0
+    node_dict["name"] = listOfAuthors[i]
     node_list.append(node_dict)
 
-# create paper nodes
-for i in range(nPapers):
-    node_dict = {} # create an empty dictionary for this node
-    node_dict["id"] = "P" + str(i)
-    node_dict["group"] = 2
-    node_list.append(node_dict)
+## create paper nodes
+#for i in range(nPapers):
+#    node_dict = {} # create an empty dictionary for this node
+#    node_dict["id"] = "P" + str(i)
+#    node_dict["group"] = 2
+#    node_list.append(node_dict)
 
 # create the links between the nodes
 link_list = []
 i=0
 for paperKeys in bib_data.entries.keys(): # go over every paper
+    # create the paper node
+    node_dict = {} # create an empty dictionary for this node
+    node_dict["id"] = "P" + str(i)
+    node_dict["group"] = 1
+    node_dict["name"] =  bib_data.entries[paperKeys].fields['title']
+    node_list.append(node_dict)
+
+    # find the authors for this paper
     authorsThisPaper = bib_data.entries[paperKeys].fields['author'].split(" and ")
+    
+    
     
     for authors in authorsThisPaper: 
         link_dict = {} # empty dictionary for this edge

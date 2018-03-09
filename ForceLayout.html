@@ -8,12 +8,26 @@
 }
 
 .nodes circle {
-  stroke: #fff;
+  stroke: #000;
   stroke-width: 1.5px;
 }
 
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: orange;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+
+}
+
 </style>
-<svg width="960" height="600"></svg>
+<svg width="1000" height="600"></svg>
 <script type="text/javascript" src="./d3.js"></script>
 <script>
 
@@ -28,30 +42,44 @@ var simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(width / 2, height / 2));
 
+// Define the div for the tooltip
+    var div = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
 d3.json("PaulErdos.json", function(error, graph) {
   if (error) throw error;
 
   var link = svg.append("g")
-      .attr("class", "links")
+    .attr("class", "links")
     .selectAll("line")
     .data(graph.links)
     .enter().append("line")
-      .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+      .attr("stroke-width", 4);
+// function(d) { return Math.sqrt(d.value); }
 
   var node = svg.append("g")
-      .attr("class", "nodes")
+    .attr("class", "nodes")
     .selectAll("circle")
     .data(graph.nodes)
     .enter().append("circle")
-      .attr("r", 5)
-      .attr("fill", function(d) { return color(d.group); })
-      .call(d3.drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended));
+    .attr("r", 10)
+    .attr("fill", function(d) { return color(d.group); })
+    .on("mouseover", function(d) {
+            div.transition()
+                .duration(100)
+                .style("opacity", .9);
+            div	.html(d.name)
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY - 28) + "px");
+            })
 
-  node.append("title")
-      .text(function(d) { return d.id; });
+    .call(d3.drag()
+    .on("start", dragstarted)
+    .on("drag", dragged)
+    .on("end", dragended))
+    ;
+
 
   simulation
       .nodes(graph.nodes)
