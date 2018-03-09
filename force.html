@@ -49,10 +49,10 @@
 			var dataset2 = d3.json("graph.json", function(data) {
     	console.log(data);
 			return data
-});
+			});
 
 			//Initialize a simple force layout, using the nodes and edges in dataset
-			var force = d3.forceSimulation(dataset.nodes)
+			var force = d3.forceSimulation(dataset2.nodes)
 						  .force("charge", d3.forceManyBody().strength(-400).distanceMin(15).distanceMax(80))
 						  .force("link", d3.forceLink(dataset.edges))
 						  .force("center", d3.forceCenter().x(w/2).y(h/2));
@@ -67,7 +67,7 @@
 
 			//Create edges as lines
 			var edges = svg.selectAll("line")
-				.data(dataset.edges)
+				.data(dataset2.edges)
 				.enter()
 				.append("line")
 				.style("stroke", "#ccc")
@@ -75,7 +75,7 @@
 
 			//Create nodes as circles
 			var nodes = svg.selectAll("circle")
-				.data(dataset.nodes)
+				.data(dataset2.nodes)
 				.enter()
 				.append("circle")
 				.attr("r", 10)
