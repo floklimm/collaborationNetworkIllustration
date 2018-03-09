@@ -109,7 +109,7 @@ d3.json("fklimm.json", function(error, graph) {
       var imgs = svg.selectAll("image").data([0]);
            imgs.enter()
           .append("svg:image")
-          .attr("xlink:href", "GitHub-Mark-120px-plus.png")
+          .attr("xlink:href", "./images/GitHub-Mark-120px-plus.png")
           .attr("x", 0)
           .attr("y", height-40)
           .attr("width", "40")
@@ -153,9 +153,13 @@ function dragended(d) {
   d.fy = null;
 }
 
-function dblclick(a){
-    window.location.assign("http://en.wikipedia.org/wiki/", '_blank');
- }
+// function dblclick(a){
+//     window.location.assign("http://en.wikipedia.org/wiki/", '_blank');
+//  }
+
+ function dblclick(a){
+   window.location.assign(a.url, '_blank');
+}
 
  function githubclick(a){
      window.location.assign("https://github.com/floklimm/collaborationNetworkIllustration", '_blank');

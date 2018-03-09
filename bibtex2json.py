@@ -80,6 +80,11 @@ for paperKeys in bib_data.entries.keys(): # go over every paper
     # find the authors for this paper
     authorsThisPaper = bib_data.entries[paperKeys].fields['author'].split(" and ")
     
+    # if the paper has a url, add it
+    try:
+        node_dict["url"] = bib_data.entries[paperKeys].fields['url']
+    except KeyError: # otherwise refer to google
+        node_dict["url"] = "https://www.google.com/search?q=" + bib_data.entries[paperKeys].fields['title']
     
     
     for authors in authorsThisPaper: 
