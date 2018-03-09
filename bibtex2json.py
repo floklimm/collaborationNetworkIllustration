@@ -54,7 +54,9 @@ for i in range(nAuthors):
     node_dict = {} # create an empty dictionary for this node
     node_dict["id"] = "A" + str(i)
     node_dict["group"] = 0
-    node_dict["name"] = listOfAuthors[i]
+    # invert the name such that the given name is before the last name
+    authorSplit = listOfAuthors[i].split(",")
+    node_dict["name"] = authorSplit[1] + ' ' + authorSplit[0]
     node_list.append(node_dict)
 
 ## create paper nodes
