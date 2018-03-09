@@ -35,19 +35,20 @@ var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height");
 
-var color = d3.scaleOrdinal(d3.schemeCategory20);
+var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id; }))
-    .force("charge", d3.forceManyBody())
+    .force("charge", d3.forceManyBody().distanceMin(20).distanceMax(100).strength(-60))
     .force("center", d3.forceCenter(width / 2, height / 2));
+
 
 // Define the div for the tooltip
     var div = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
 
-d3.json("PaulErdos.json", function(error, graph) {
+d3.json("fklimm.json", function(error, graph) {
   if (error) throw error;
 
   var link = svg.append("g")
@@ -73,7 +74,11 @@ d3.json("PaulErdos.json", function(error, graph) {
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
             })
-
+    .on("mouseout", function(d) {
+                    div.transition()
+                        .duration(1000)
+                        .style("opacity", .0);
+                    })
     .call(d3.drag()
     .on("start", dragstarted)
     .on("drag", dragged)

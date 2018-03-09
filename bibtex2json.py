@@ -10,8 +10,8 @@ By Florian Klimm, March 2018
 
 # some options
 deleteEgoNode = True
-inputBibFileName = 'einstein.bib'
-outputJSONFileName = 'einstein.json'
+inputBibFileName = 'publications_Florian_Klimm.bib'
+outputJSONFileName = 'fklimm.json'
 
 # import necessary libraries
 from pybtex.database.input import bibtex # for reading the bib files
@@ -38,6 +38,7 @@ if deleteEgoNode == True:
      egoNode = max(listOfAuthors, key=listOfAuthors.count) # returns the ego node
      listOfAuthors = list(set(listOfAuthors)) # gets unique list of authors
      listOfAuthors.pop(listOfAuthors.index(egoNode)) # deletes it from the list of authors
+     print("Removing the ego node: %s " %egoNode )
 else:
     listOfAuthors = list(set(listOfAuthors)) # gets unique list of authors
 
