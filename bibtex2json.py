@@ -12,10 +12,13 @@ By Florian Klimm, March 2018
 deleteEgoNode = True
 inputBibFileName = 'publications_Florian_Klimm.bib'
 outputJSONFileName = 'fklimm.json'
+authorInformationFile = 'authorInfoKlimm.csv' # optional co-author information
+
 
 # import necessary libraries
 from pybtex.database.input import bibtex # for reading the bib files
 import json # for writing the json
+import csv # for loading comma seperated values
 
 # some preperation to read the bibtex file
 parser = bibtex.Parser()
@@ -45,9 +48,25 @@ else:
 nAuthors = len(listOfAuthors) # number of author nodes
 nPapers = len(bib_data.entries.keys()) # number of paper nodes
 
-# create a dictionary reflecting the graph (there are more pyhtonic ways
-# possible to creat this, e.g., with zip, but this is easiest)
 
+# read the additional author information from the csv
+authorInfo_dict = {} # create an empty dictionary
+try:
+    authorInfo_reader = csv.DictReader(open(authorInformationFile))
+    
+    for row in authorInfo_reader:
+        print(row)
+        authorInfo_dict[row['name']] = row['url']
+except FileNotFoundError:
+    print("no optional co-author information available")
+
+
+
+
+
+
+# create a dictionary reflecting the graph (there are more pythonic ways
+# possible to creat this, e.g., with zip, but this is easiest)
 node_list = []
 # create author nodes
 for i in range(nAuthors):
@@ -56,9 +75,15 @@ for i in range(nAuthors):
     node_dict["group"] = 0
     # invert the name such that the given name is before the last name
     authorSplit = listOfAuthors[i].split(",")
-    node_dict["name"] = authorSplit[1] + ' ' + authorSplit[0]
+    nameThisAuthor = authorSplit[1][1::] + ' ' + authorSplit[0]
+    print(nameThisAuthor)
+    node_dict["name"] = nameThisAuthor
     node_list.append(node_dict)
-
+    # try to set the url for this author
+    try:
+        node_dict["url"] = authorInfo_dict[nameThisAuthor]
+    except KeyError:
+        node_dict["url"] = "https://www.google.com/search?q=" + nameThisAuthor
 ## create paper nodes
 #for i in range(nPapers):
 #    node_dict = {} # create an empty dictionary for this node

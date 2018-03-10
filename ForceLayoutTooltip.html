@@ -12,6 +12,7 @@
   stroke-width: 1.5px;
 }
 
+
 div.tooltip {
     position: absolute;
     text-align: center;
@@ -30,16 +31,19 @@ div.tooltip {
 
 
 <h1> Exemplary Collaboration Network </h1>
+<h2> with tooltip</h2>
+
+
+<!--into this svg the illustration will be drawn -->
 
 <svg width="1000" height="600"></svg>
 
 
-
-
+<!--  we call the d3 library -->
 <script type="text/javascript" src="./d3.js"></script>
 
 
-
+<!--  this script does all the actual work -->
 <script>
 
 var svg = d3.select("svg"),
@@ -51,7 +55,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id; }))
-    .force("charge", d3.forceManyBody().distanceMin(20).distanceMax(400).strength(-25))
+    .force("charge", d3.forceManyBody().distanceMin(20).distanceMax(300).strength(-60))
     .force("center", d3.forceCenter(width / 2, height / 2));
 
 // Define the div for the tooltip
@@ -68,7 +72,6 @@ d3.json("fklimm.json", function(error, graph) {
     .data(graph.links)
     .enter().append("line")
       .attr("stroke-width", 4);
-// function(d) { return Math.sqrt(d.value); }
 
   var node = svg.append("g")
     .attr("class", "nodes")
@@ -153,9 +156,6 @@ function dragended(d) {
   d.fy = null;
 }
 
-// function dblclick(a){
-//     window.location.assign("http://en.wikipedia.org/wiki/", '_blank');
-//  }
 
  function dblclick(a){
    window.location.assign(a.url, '_blank');
@@ -164,38 +164,5 @@ function dragended(d) {
  function githubclick(a){
      window.location.assign("https://github.com/floklimm/collaborationNetworkIllustration", '_blank');
   }
-
-
- // d3.selectAll("#nodes").append("svg:image")
- //       .attr("xlink:href", "GitHub-Mark-120px-plus.png")
- //       .attr("width", 150)
- //       .attr("height", 200);
-
- //function dblclick(a){
-//    window.location.assign("http://en.wikipedia.org/wiki/"+a.properties.name, '_blank');
-// }
-
-//d3.select("svg").append("image").datum(imageData).attr("height", height/2).attr("width", width/2).attr("xlink:href", "GitHub-Mark-120px-plus.png")
-
-//d3.select("body").append("svg").attr("height", "300px").attr("width", "276px")
-
-// nodeEnter.append("svg:image")
-//   .attr('x', width/2)
-//   .attr('y', height/2)
-//   .attr('width', 20)
-//   .attr('height', 24)
-//   .attr('xlink:href',"GitHub-Mark-120px-plus.png")
-
-// var imgs = svg.selectAll("image");
-//             imgs.enter()
-//             .append("svg:image")
-//             .attr('xlink:href',"GitHub-Mark-120px-plus.png")
-//             .attr('x', 14.5)
-//             .attr('y', 9.5);
-
-// svg.append('image')
-// .attr('xlink:href',"GitHub-Mark-120px-plus.png")
-// .attr('x', '14.5')
-// .attr('y', '9.5');
 
 </script>
