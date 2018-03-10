@@ -39,13 +39,13 @@ div.tooltip {
 
 
 <!--  we call the d3 library -->
-<script type="text/javascript" src="./d3.js"></script>
+<script type="text/javascript" src="./d3.v4.min.js"></script>
 
 
 <!--  this script does all the actual work -->
 <script>
 
-let JSONFILENAME = "fklimm.json"
+let JSONFILENAME = "publicationsOPIG.json"
 
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
@@ -56,7 +56,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id; }))
-    .force("charge", d3.forceManyBody().distanceMin(20).distanceMax(300).strength(-60))
+    .force("charge", d3.forceManyBody().distanceMin(20).distanceMax(150).strength(-20))
     .force("center", d3.forceCenter(width / 2, height / 2));
 
 // Define the div for the tooltip

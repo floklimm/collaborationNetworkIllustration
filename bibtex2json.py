@@ -11,6 +11,7 @@ By Florian Klimm, March 2018
 ## some options
 inputBibFileName = 'publications_Florian_Klimm.bib'
 outputJSONFileName = 'fklimm.json'
+#
 authorInformationFile = 'authorInfoKlimm.csv' # optional co-author information
 deleteEgoNode = True
 ##
@@ -19,6 +20,19 @@ deleteEgoNode = True
 from pybtex.database.input import bibtex # for reading the bib files
 import json # for writing the json
 import csv # for loading comma seperated values
+import re
+
+
+# some auxiliary functions   
+# you migth have to add further repalcement rules      
+def latex2HTML( latexString ):
+    "takes the name of an author as string and return the string with latex character replaced as normal string for the HTML"
+    latexString = latexString.replace('{\\"u}' ,'ü')
+    latexString = latexString.replace('{\\\'o}' ,'ó')
+    latexString = latexString.replace('{\\\'a}' ,'á')
+    return(latexString)
+        
+
 
 # some preperation to read the bibtex file
 parser = bibtex.Parser()
@@ -50,13 +64,13 @@ nPapers = len(bib_data.entries.keys()) # number of paper nodes
 
 
 # read the additional author information from the csv
-authorInfo_dict = {} # create an empty dictionary
+authorLinks_dict = {} # create an empty dictionary
+authorImage_dict = {} # create an empty dictionary
 try:
     authorInfo_reader = csv.DictReader(open(authorInformationFile))
-    
     for row in authorInfo_reader:
-        print(row)
-        authorInfo_dict[row['name']] = row['url']
+        authorLinks_dict[row['name']] = row['url']
+        authorImage_dict[row['name']] = row['image']
 except FileNotFoundError:
     print("no optional co-author information available")
 
@@ -76,14 +90,23 @@ for i in range(nAuthors):
     # invert the name such that the given name is before the last name
     authorSplit = listOfAuthors[i].split(",")
     nameThisAuthor = authorSplit[1][1::] + ' ' + authorSplit[0]
-    print(nameThisAuthor)
-    node_dict["name"] = nameThisAuthor
+    
+    nameThisAuthorHTML = latex2HTML(nameThisAuthor)
+    print(nameThisAuthorHTML)
+    node_dict["name"] = nameThisAuthorHTML
     node_list.append(node_dict)
     # try to set the url for this author
     try:
-        node_dict["url"] = authorInfo_dict[nameThisAuthor]
+        node_dict["url"] = authorLinks_dict[nameThisAuthor]
     except KeyError:
         node_dict["url"] = "https://www.google.com/search?q=" + nameThisAuthor
+        
+        # try to set a image for this author
+    try:
+        node_dict["image"] = authorImage_dict[nameThisAuthor]
+    except KeyError: # if no image jsut leave blank
+        node_dict["image"] = []
+        
 ## create paper nodes
 #for i in range(nPapers):
 #    node_dict = {} # create an empty dictionary for this node
@@ -99,7 +122,11 @@ for paperKeys in bib_data.entries.keys(): # go over every paper
     node_dict = {} # create an empty dictionary for this node
     node_dict["id"] = "P" + str(i)
     node_dict["group"] = 1
-    node_dict["name"] =  bib_data.entries[paperKeys].fields['title']
+    thisPaperName = bib_data.entries[paperKeys].fields['title']
+    # remove curly bracket in paper name, remove it
+    if thisPaperName[0]=='{':
+        thisPaperName=thisPaperName[1:-1]
+    node_dict["name"] =  thisPaperName
     node_list.append(node_dict)
 
     # find the authors for this paper
@@ -119,18 +146,17 @@ for paperKeys in bib_data.entries.keys(): # go over every paper
             link_dict["target"] = "A" + str(listOfAuthors.index(authors)) # and attached to co-author
             link_list.append(link_dict)    # save it into the list
         except ValueError:
-            print("Author %s not in list, probably the ego node." %authors )
+            pass
+            #print("Author %s not in list, probably the ego node." %authors )
     i=i+1
     
 # write into dictionary
 graph_dict = {"nodes" : node_list, "links" : link_list}
 
 
- 
 # opening the file to write
 if outputJSONFileName:
     # Writing JSON data
     with open(outputJSONFileName, 'w') as f:
         json.dump(graph_dict, f)
-        
         
