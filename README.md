@@ -1,12 +1,15 @@
-# collaboration_network
-Creating interactive visualisations of collaboration networks with JavaScript
+# Creating interactive visualisations of collaboration networks with JavaScript
+
+** This is still in development and might not work**
+
+
 
 This allows the creation of visulisations of your scientific collaboration network with the D3.js library. Input is a BibTex library file with all (your) publications. It works by calling the python script  *bibtex2json*, which writes a .json. The JSON is then read by html/js to create the illustration.
 
 Requirements:
   - python for the script running
   - python module pybtex for reading the BibTex file
-  - D3, which will be loaded automatically by your browser when it is needed
+  - D3, which will be loaded automatically by your browser when it is needed (using version 4)
 
 Howto:
   - save your publications into a bibfile, e.g. MarieCurie.bib
