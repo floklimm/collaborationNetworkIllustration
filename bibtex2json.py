@@ -8,12 +8,12 @@ By Florian Klimm, March 2018
 """
 
 
-# some options
-deleteEgoNode = True
+## some options
 inputBibFileName = 'publications_Florian_Klimm.bib'
 outputJSONFileName = 'fklimm.json'
 authorInformationFile = 'authorInfoKlimm.csv' # optional co-author information
-
+deleteEgoNode = True
+##
 
 # import necessary libraries
 from pybtex.database.input import bibtex # for reading the bib files

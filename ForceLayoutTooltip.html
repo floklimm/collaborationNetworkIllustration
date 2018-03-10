@@ -33,7 +33,6 @@ div.tooltip {
 <h1> Exemplary Collaboration Network </h1>
 <h2> with tooltip</h2>
 
-
 <!--into this svg the illustration will be drawn -->
 
 <svg width="1000" height="600"></svg>
@@ -45,6 +44,8 @@ div.tooltip {
 
 <!--  this script does all the actual work -->
 <script>
+
+let JSONFILENAME = "fklimm.json"
 
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
@@ -63,7 +64,7 @@ var simulation = d3.forceSimulation()
         .attr("class", "tooltip")
         .style("opacity", 0);
 
-d3.json("fklimm.json", function(error, graph) {
+d3.json(JSONFILENAME, function(error, graph) {
   if (error) throw error;
 
   var link = svg.append("g")
