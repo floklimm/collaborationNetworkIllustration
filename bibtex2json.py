@@ -9,10 +9,10 @@ By Florian Klimm, March 2018
 
 
 ## some options
-inputBibFileName = 'publications_Florian_Klimm.bib'
-outputJSONFileName = 'fklimm.json'
+inputBibFileName = 'publicationsRosalindFranklin.bib'
+outputJSONFileName = 'collaborationNetwork.json'
 #
-authorInformationFile = 'authorInfoKlimm.csv' # optional co-author information
+authorInformationFile = 'authorinfoRosalindFranklin.csv' # optional co-author information
 deleteEgoNode = True
 ##
 
@@ -128,6 +128,13 @@ for paperKeys in bib_data.entries.keys(): # go over every paper
         thisPaperName=thisPaperName[1:-1]
     node_dict["name"] =  thisPaperName
     node_list.append(node_dict)
+
+    # set image for this paper
+    try:
+        node_dict["image"] = bib_data.entries[paperKeys].fields['image']
+    except KeyError: # if no image just leave blank
+        node_dict["image"] = []
+
 
     # find the authors for this paper
     authorsThisPaper = bib_data.entries[paperKeys].fields['author'].split(" and ")
