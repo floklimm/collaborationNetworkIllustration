@@ -13,7 +13,7 @@ inputBibFileName = 'publicationsRosalindFranklin.bib'
 outputJSONFileName = 'collaborationNetwork.json'
 #
 authorInformationFile = 'authorinfoRosalindFranklin.csv' # optional co-author information
-deleteEgoNode = True
+deleteEgoNode = False
 ##
 
 # import necessary libraries
@@ -25,7 +25,7 @@ import re
 
 # some auxiliary functions   
 # you migth have to add further repalcement rules      
-def latex2HTML( latexString ):
+def latex2unicode( latexString ):
     "takes the name of an author as string and return the string with latex character replaced as normal string for the HTML"
     latexString = latexString.replace('{\\"u}' ,'ü')
     latexString = latexString.replace('{\\\'o}' ,'ó')
@@ -91,13 +91,17 @@ for i in range(nAuthors):
     authorSplit = listOfAuthors[i].split(",")
     nameThisAuthor = authorSplit[1][1::] + ' ' + authorSplit[0]
     
-    nameThisAuthorHTML = latex2HTML(nameThisAuthor)
-    print(nameThisAuthorHTML)
-    node_dict["name"] = nameThisAuthorHTML
+    nameThisAuthorUnicode = latex2unicode(nameThisAuthor)
+    print(nameThisAuthorUnicode)
+    node_dict["name"] = nameThisAuthorUnicode
     node_list.append(node_dict)
-    # try to set the url for this author
+    # try to set the url for this author but default is google it
+    node_dict["url"] = "https://www.google.com/search?q=" + nameThisAuthor
     try:
-        node_dict["url"] = authorLinks_dict[nameThisAuthor]
+        if authorLinks_dict[nameThisAuthor] is None:
+            raise KeyError('no information for this author')
+        else:
+            node_dict["url"] = authorLinks_dict[nameThisAuthor]
     except KeyError:
         node_dict["url"] = "https://www.google.com/search?q=" + nameThisAuthor
         
