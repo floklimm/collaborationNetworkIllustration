@@ -28,7 +28,7 @@ Howto:
 
 The python scripts reads some optional information from the .bib file, e.g., a url, if given by "Url" tag (see for example the franklin1951crystallite paper in the exemplary bib). If this is not given double-clicking a paper-node automatically google searches the paper title. You can also specify the image that should be shown for a certain paper by giving a link to an image file with the non-standard "image" tag (see for example the paper franklin1958structureRibo)
 
-Furthermore you can read optional author information from a file, see `authorinfoRosalindFranklin.csv`. At the moment this is only a link to the authors homepage (opened by double clicking the node) and a link to a photo. At best you store the image locally but you can also link to an image hosted somewhere else. You don't have to give all information for all authors.
+You can also read optional author information from a file, see `authorinfoRosalindFranklin.csv`. At the moment this is only a link to the authors homepage (opened by double clicking the node) and a link to a photo. At best you store the image locally but you can also link to an image hosted somewhere else. You don't have to give all information for all authors.
 
 The default behaviour is that the ego node, representing the author that is on all papers, is removed. But this can be switched off, e.g., if you want to show the publications of a larger research group with multiple PIs.
 
