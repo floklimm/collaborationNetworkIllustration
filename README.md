@@ -1,13 +1,11 @@
 # Creating interactive visualisations of collaboration networks with JavaScript
 
-**For interactive example click [here](http://www.dtc.ox.ac.uk/people/14/klimmf/networkIllustration.html)**
+**For an interactive example click [here](http://www.dtc.ox.ac.uk/people/14/klimmf/networkIllustration.html)**
 
 
 This script allows the creation of visualisations of your scientific collaboration network with the D3.js library. Input is a BibTex library file with all (your) publications. It works by calling the python script  *bibtex2json*, which writes a .json. The JSON is then read by html/js to create the illustration.
 
-
-![alt text](./images/D3networkExample.png "Static Example Network")
-
+![alt text](./videos/RosalindFranklinAuthorshipNetwork.gif)
 
 GitHub does not allow the presentation of JavaScript illustrations on this page, thus the figure above is just a static screenshot. For some interactive examples, please see my [page](http://www.dtc.ox.ac.uk/people/14/klimmf/networkIllustration.html) or download the files and check out the example, consisting of some of Rosalind Franklin's publications. A larger network, consisting of all publications of the Oxford Protein Informatics Group is shown [here](http://www.blopig.com/blog/2018/03/interactive-collaboration-networks-with-d3/). At the moment there are two variants of the illustration: one simple version with only showing the network and information as tooltips and a second with images of the authors and the papers.
 
