@@ -5,8 +5,10 @@
 
 This script allows the creation of visualisations of your scientific collaboration network with the D3.js library. Input is a BibTex library file with all (your) publications. It works by calling the python script  *bibtex2json*, which writes a .json. The JSON is then read by html/js to create the illustration.
 
-![Small example network](./videos/RosalindFranklinAuthorshipNetwork.gif =500x)
-![Large example network](./videos/largeExampleNetworkIllustration.mov.gif =600x)
+![Small example network]("./videos/RosalindFranklinAuthorshipNetwork.gif"=500x)
+![Large example network]("./videos/largeExampleNetworkIllustration.mov.gif" =600x)
+<img src="https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif" width="40" height="40" />
+
 
 GitHub does not allow the presentation of JavaScript illustrations on this page, thus the figures above are just screenshots. For some interactive examples, please see my [page](http://www.dtc.ox.ac.uk/people/14/klimmf/networkIllustration.html) or download the files and check out the example, which consists of some of Rosalind Franklin's publications. A larger network (consisting of all publications of the Oxford Protein Informatics Group) is shown [here](http://www.dtc.ox.ac.uk/people/14/klimmf/networkIllustrationTooltip.html). At the moment there are two variants of the illustration: one simple version with only showing the network and information as tooltips and a second with images of the authors and the papers.
 
