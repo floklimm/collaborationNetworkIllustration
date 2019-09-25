@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-script for transfering a BibTex library (.bib-file) into a bipartite graph 
-that is save into a JavaScript Object Notation file (.json), which can be read 
+script for transfering a BibTex library (.bib-file) into a bipartite graph
+that is save into a JavaScript Object Notation file (.json), which can be read
 by JavaScript to create an interactive visualisation.
 
 By Florian Klimm, March 2018
@@ -23,15 +23,15 @@ import csv # for loading comma seperated values
 import re
 
 
-# some auxiliary functions   
-# you migth have to add further repalcement rules      
+# some auxiliary functions
+# you migth have to add further repalcement rules
 def latex2unicode( latexString ):
     "takes the name of an author as string and return the string with latex character replaced as normal string for the HTML"
     latexString = latexString.replace('{\\"u}' ,'ü')
     latexString = latexString.replace('{\\\'o}' ,'ó')
     latexString = latexString.replace('{\\\'a}' ,'á')
     return(latexString)
-        
+
 
 
 # some preperation to read the bibtex file
@@ -49,7 +49,7 @@ for paperKeys in bib_data.entries.keys():
     for author in authors:
         listOfAuthors.append(author)
 
-# deleting ego 
+# deleting ego
 if deleteEgoNode == True:
     # we assume that the author with the most entries is the ego node and delete it
      egoNode = max(listOfAuthors, key=listOfAuthors.count) # returns the ego node
@@ -88,9 +88,13 @@ for i in range(nAuthors):
     node_dict["id"] = "A" + str(i)
     node_dict["group"] = 0
     # invert the name such that the given name is before the last name
-    authorSplit = listOfAuthors[i].split(",")
-    nameThisAuthor = authorSplit[1][1::] + ' ' + authorSplit[0]
-    
+    try: # we need this try to deal with single author papers
+        authorSplit = listOfAuthors[i].split(",")
+        nameThisAuthor = authorSplit[1][1::] + ' ' + authorSplit[0]
+    except:
+        authorSplit = listOfAuthors[i]
+        nameThisAuthor = authorSplit[1][1::] + ' ' + authorSplit[0]
+
     nameThisAuthorUnicode = latex2unicode(nameThisAuthor)
     print(nameThisAuthorUnicode)
     node_dict["name"] = nameThisAuthorUnicode
@@ -104,13 +108,13 @@ for i in range(nAuthors):
             node_dict["url"] = authorLinks_dict[nameThisAuthor]
     except KeyError:
         node_dict["url"] = "https://www.google.com/search?q=" + nameThisAuthor
-        
+
         # try to set a image for this author
     try:
         node_dict["image"] = authorImage_dict[nameThisAuthor]
     except KeyError: # if no image jsut leave blank
         node_dict["image"] = []
-        
+
 ## create paper nodes
 #for i in range(nPapers):
 #    node_dict = {} # create an empty dictionary for this node
@@ -142,15 +146,15 @@ for paperKeys in bib_data.entries.keys(): # go over every paper
 
     # find the authors for this paper
     authorsThisPaper = bib_data.entries[paperKeys].fields['author'].split(" and ")
-    
+
     # if the paper has a url, add it
     try:
         node_dict["url"] = bib_data.entries[paperKeys].fields['url']
     except KeyError: # otherwise refer to google
         node_dict["url"] = "https://www.google.com/search?q=" + bib_data.entries[paperKeys].fields['title']
-    
-    
-    for authors in authorsThisPaper: 
+
+
+    for authors in authorsThisPaper:
         link_dict = {} # empty dictionary for this edge
         link_dict["source"] = "P" + str(i) # attached to this paper
         try:
@@ -160,7 +164,7 @@ for paperKeys in bib_data.entries.keys(): # go over every paper
             pass
             #print("Author %s not in list, probably the ego node." %authors )
     i=i+1
-    
+
 # write into dictionary
 graph_dict = {"nodes" : node_list, "links" : link_list}
 
@@ -170,4 +174,3 @@ if outputJSONFileName:
     # Writing JSON data
     with open(outputJSONFileName, 'w') as f:
         json.dump(graph_dict, f)
-        
